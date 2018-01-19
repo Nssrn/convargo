@@ -3,10 +3,8 @@
 //console.log(actors);
 
 deliveries.forEach(function (delivery) {
-    var priceDelivery = getPriceByDelivery(delivery);
-    console.log(delivery.id);
-    console.log(priceDelivery + "EUR");
-    console.log("-------------");
+   getPriceByDelivery(delivery);
+    
 });
 
 
@@ -25,12 +23,12 @@ function getPriceByDelivery(delivery) {
     });
     var distance = delivery.distance;
     var volume = delivery.volume;
-    return getPricePerDistanceVolume(distance, pricePerKm, volume, pricePerVolume, truck);
+    return getPricePerDistanceVolume(distance, pricePerKm, volume, pricePerVolume, truck, delivery);
 }
 
 
-function getPricePerDistanceVolume(distance, pricePerKm, volume, pricePerVolume,truck) {
-	console.log(truck.pricePerVolume);
+function getPricePerDistanceVolume(distance, pricePerKm, volume, pricePerVolume,truck,delivery) {
+	//console.log(truck.pricePerVolume);
 	var price = distance * pricePerKm + volume * pricePerVolume;
 	
 
@@ -38,7 +36,28 @@ function getPricePerDistanceVolume(distance, pricePerKm, volume, pricePerVolume,
 	if (truck.pricePerVolume > 10) {price = price - (price * 30/100);}
 	if (truck.pricePerVolume > 25) {price = price - (price * 50/100);}
 
+	console.log("id : " + delivery.id);
+    console.log("price : " + price + "EUR");
+    
 
-    return price;
+    getCommission(price, distance);
+    console.log("-------------");
+    
+}
+
+function getCommission(price, distance){
+
+ var commission = price * 30/100;
+ var insurance = commission / 2;
+ var treasury = parseInt(distance/500);
+ var convargo = price - commission - insurance - treasury;
+
+ console.log("commission : "+commission);
+ console.log("insurance : "+insurance);
+ console.log("treasury : "+treasury);
+ console.log("convargo : "+convargo);
+
+
+
 }
 
