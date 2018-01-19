@@ -144,7 +144,3 @@ const actors = [{
     'amount': 0
   }]
 }];
-
-console.log(truckers);
-console.log(deliveries);
-console.log(actors);
