@@ -23,20 +23,45 @@ function getPriceByDelivery(delivery) {
     });
     var distance = delivery.distance;
     var volume = delivery.volume;
+
+
     return getPricePerDistanceVolume(distance, pricePerKm, volume, pricePerVolume, truck, delivery);
 }
 
 
 function getPricePerDistanceVolume(distance, pricePerKm, volume, pricePerVolume,truck,delivery) {
 	//console.log(truck.pricePerVolume);
-	var price = distance * pricePerKm + volume * pricePerVolume;
+	var additionalcharge = 0;
+
+	var option = delivery.options.deductibleReduction;
+
+	if (option=== true){
+    	additionalcharge = delivery.volume;
+    }
+    
+
+    //console.log(delivery.options.deductibleReduction);
+    //console.log(additionalcharge);
+
+	var price = (distance * pricePerKm + volume * pricePerVolume) + additionalcharge;
 	
 
 	if (truck.pricePerVolume > 5) {price = price - (price * 10/100);}
 	if (truck.pricePerVolume > 10) {price = price - (price * 30/100);}
 	if (truck.pricePerVolume > 25) {price = price - (price * 50/100);}
 
+	
+	
+
+    
+
+
+
+//Affichage
 	console.log("id : " + delivery.id);
+	console.log("options:'deductibleReduction': "
+    +   delivery.options.deductibleReduction); 
+
     console.log("price : " + price + "EUR");
     
 
