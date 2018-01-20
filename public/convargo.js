@@ -2,10 +2,13 @@
 //console.log(deliveries);
 //console.log(actors);
 
+
 deliveries.forEach(function (delivery) {
    getPriceByDelivery(delivery);
+   
     
 });
+
 
 
 function getPriceByDelivery(delivery) {
@@ -30,7 +33,7 @@ function getPriceByDelivery(delivery) {
 
 
 function getPricePerDistanceVolume(distance, pricePerKm, volume, pricePerVolume,truck,delivery) {
-	//console.log(truck.pricePerVolume);
+	
 	var additionalcharge = 0;
 
 	var option = delivery.options.deductibleReduction;
@@ -38,51 +41,55 @@ function getPricePerDistanceVolume(distance, pricePerKm, volume, pricePerVolume,
 	if (option=== true){
     	additionalcharge = delivery.volume;
     }
-    
 
-    //console.log(delivery.options.deductibleReduction);
-    //console.log(additionalcharge);
+    var npricePerVolume = pricePerVolume;
+	if (delivery.volume > 5) {  npricePerVolume = pricePerVolume - (pricePerVolume * 10/100);}
+	if (delivery.volume > 10) { npricePerVolume = pricePerVolume - (pricePerVolume * 30/100);}
+	if (delivery.volume > 25) { npricePerVolume = pricePerVolume - (pricePerVolume * 50/100);}
 
-	var price = (distance * pricePerKm + volume * pricePerVolume) + additionalcharge;
-	
-
-	if (truck.pricePerVolume > 5) {price = price - (price * 10/100);}
-	if (truck.pricePerVolume > 10) {price = price - (price * 30/100);}
-	if (truck.pricePerVolume > 25) {price = price - (price * 50/100);}
-
-	
-	
-
-    
-
-
+   //console.log(npricePerVolume);
+   var price = (distance * pricePerKm + volume * npricePerVolume);
 
 //Affichage
-	console.log("id : " + delivery.id);
-	console.log("options:'deductibleReduction': "
-    +   delivery.options.deductibleReduction); 
+	
+	console.log("Delivery ID : " + delivery.id);
+	//console.log("options:'deductibleReduction': " +   delivery.options.deductibleReduction); 
 
     console.log("price : " + price + "EUR");
+    console.log("charge (deductible Reduction) : " +additionalcharge + "EUR");
     
-
-    getCommission(price, distance);
+    console.log("Payment : ");
+    PayActors(price, distance,additionalcharge);
+    //getCommission(price,distance);
     console.log("-------------");
     
+    
 }
 
-function getCommission(price, distance){
+function PayActors(price, distance,additionalcharge)
+{
+	var shipperAmount = price + additionalcharge;
+	 var commission = price * 30/100;
+	 var insurance = commission / 2;
+	 var treasury = 1 + parseInt(distance/500);
+	 var convargo = commission - insurance - treasury;
 
- var commission = price * 30/100;
- var insurance = commission / 2;
- var treasury = parseInt(distance/500);
- var convargo = price - commission - insurance - treasury;
+	 var ownerAmount = price - commission;
+	 var convargoAmount = convargo + additionalcharge;
 
- console.log("commission : "+commission);
- console.log("insurance : "+insurance);
- console.log("treasury : "+treasury);
- console.log("convargo : "+convargo);
+	 console.log("Shipper Amount : " + shipperAmount);
 
+	 console.log("Owner Amount : " + ownerAmount);
+	 console.log("Insurance Amount : "+ insurance);
+	 console.log("Treasury Amount : "+treasury);
+	 console.log("Convargo Amount : "+ convargoAmount);
 
-
+	
 }
+
+
+
+
+
+
 

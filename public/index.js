@@ -79,7 +79,7 @@ const actors = [{
   'payment': [{
     'who': 'shipper',
     'type': 'debit',
-    'amount': 0
+    'amount': 10
   }, {
     'who': 'trucker',
     'type': 'credit',
